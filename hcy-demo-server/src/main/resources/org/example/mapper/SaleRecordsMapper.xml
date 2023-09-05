@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.mapper.SaleRecordsMapper">
+
+
+    <sql id="base_list">
+        t1.sale_id ,
+        t1.good_id,
+        t1.user_id,
+        t1.count,
+        t1.phone_number,
+        t1.createTime,
+        t1.updateTime,
+        t1.reason
+    </sql>
+
+    <select id="getPageList" resultType="org.example.entity.SaleRecords">
+        select
+        <include refid="base_list"></include>
+        ,t2.good_name
+        ,t3.name userName
+        from sale_records t1
+        left join goods t2 on t1.good_id = t2.good_id
+        left join user t3 on t1.user_id =t3.id
+        <where>
+            <if test="userName != null and userName != ''">
+                t3.name like concat('%',#{userName},'%')
+            </if>
+            <if test="beginTime != null and endTime != null">
+                and createTime between #{beginTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+</mapper>

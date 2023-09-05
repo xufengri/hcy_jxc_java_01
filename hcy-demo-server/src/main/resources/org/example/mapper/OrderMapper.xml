@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.mapper.OrderMapper">
+    <select id="selectPage" resultType="org.example.entity.Order">
+        select order_id,user,user_id,statut,type,total_price,descs,createTime,updateTime,city,phone_number,deliveryTime
+        from orders
+        <where>
+            <if test="userName != null and userName != ''">
+                user like concat('%',#{userName},'%')
+            </if>
+
+            <if test="statut != null">
+                and statut =#{statut}
+            </if>
+            <if test="type != null">
+                and type=#{type}
+            </if>
+            <if test="beginTime != null and endTime != null">
+                deliveryTime between #{beginTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+</mapper>

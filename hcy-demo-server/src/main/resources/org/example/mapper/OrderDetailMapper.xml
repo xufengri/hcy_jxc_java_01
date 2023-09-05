@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.mapper.OrderDetailMapper">
+    <select id="selectListByOrderID" resultType="org.example.vo.OrderDetailVo">
+        select od.order_id ,
+               od.good_name ,
+               g.total ,
+               g.good_status ,
+               od.count ,
+               od.price,
+               od.good_id
+        from order_detail od left join goods g on od.good_id = g.good_id where  od.order_id =#{orderId}
+    </select>
+</mapper>

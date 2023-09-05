@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.mapper.RolesMapper">
+    <select id="selectByGoodId" resultType="org.example.vo.PriceList">
+        select r.name,
+               gp.role_id,
+               gp.price
+        from roles r
+                 join good_price gp
+                      on r.id = gp.role_id
+        where gp.good_id = #{goodId}
+    </select>
+</mapper>
