@@ -7,6 +7,8 @@ import org.example.constant.MessageConstant;
 import org.example.constant.StatusConstant;
 import org.example.dto.AddGoodDto;
 import org.example.dto.GoodsPageDto;
+import org.example.dto.UpStatusDto;
+import org.example.dto.UpdateGoodDto;
 import org.example.entity.Goods;
 import org.example.exception.BusinessException;
 import org.example.mapper.GoodPriceMapper;
@@ -70,24 +72,91 @@ public class GoodsServiceImpl implements GoodsService {
     @Transactional
     public CommonVo addGood(AddGoodDto addGoodDto) {
         Goods byGoodName = goodsMapper.selectByGoodName(addGoodDto.getGoodName());
-        if (Objects.nonNull(byGoodName)){
+        if (Objects.nonNull(byGoodName)) {
             throw new BusinessException(StatusConstant.DISABLE, MessageConstant.GOODNAME_ALREADY_EXISTS);
         }
         Goods byGoodCode = goodsMapper.selectByGoodCode(addGoodDto.getGoodCode());
-        if (Objects.nonNull(byGoodCode)){
+        if (Objects.nonNull(byGoodCode)) {
             throw new BusinessException(StatusConstant.DISABLE, MessageConstant.GOODCODE_ALREADY_EXISTS);
         }
         try {
             goodsMapper.insert(addGoodDto);
             Goods dbGood = goodsMapper.selectByGoodName(addGoodDto.getGoodName());
             for (PriceList priceList : addGoodDto.getPriceList()) {
-                goodPriceMapper.insert(dbGood.getGoodId(),priceList.getRoleId(),priceList.getPrice());
+                goodPriceMapper.insert(dbGood.getGoodId(), priceList.getRoleId(), priceList.getPrice());
             }
             return CommonVo.builder()
                     .fieldCount(0)
                     .affectedRows(1)
                     .insertId(0)
                     .serverStatus(2)
+                    .warningCount(0)
+                    .message("")
+                    .protocol41(true)
+                    .changeRows(0).build();
+        } catch (Exception e) {
+            throw new BusinessException(StatusConstant.DISABLE, e.getMessage());
+        }
+    }
+
+    @Override
+    public CommonVo upStatus(UpStatusDto upStatusDto) {
+        try {
+            if (upStatusDto.getGoodStatus().equals(0)) {
+                goodsMapper.upStatus(upStatusDto.getGoodId());
+            }
+            goodsMapper.downStatus(upStatusDto.getGoodId());
+            return CommonVo.builder()
+                    .fieldCount(0)
+                    .affectedRows(1)
+                    .insertId(0)
+                    .serverStatus(2)
+                    .warningCount(0)
+                    .message("(Rows matched:" + 1 + "Changed:" + 1 + "Warnings:" + 0 + ")")
+                    .protocol41(true)
+                    .changeRows(1).build();
+        } catch (Exception e) {
+            throw new BusinessException(StatusConstant.DISABLE, e.getMessage());
+        }
+
+    }
+
+    @Override
+    @Transactional
+    public CommonVo updateGood(UpdateGoodDto updateGoodDto) {
+        //参数校验
+        if (!updateGoodDto.getGoodStatus().equals(0)) {
+            throw new BusinessException(StatusConstant.DISABLE, MessageConstant.GOOD_UP);
+        }
+        try {
+            goodsMapper.updateGood(updateGoodDto);
+            for (PriceList priceList : updateGoodDto.getPriceList()) {
+                goodPriceMapper.deleteByGoodId(updateGoodDto.getGoodId());
+                goodPriceMapper.insert(updateGoodDto.getGoodId(), priceList.getRoleId(), priceList.getPrice());
+            }
+            return CommonVo.builder()
+                    .fieldCount(0)
+                    .affectedRows(2)
+                    .insertId(0)
+                    .serverStatus(2)
+                    .warningCount(0)
+                    .message("(Rows matched:" + 2 + "Changed:" + 0 + "Warnings:" + 0 + ")")
+                    .protocol41(true)
+                    .changeRows(0).build();
+        } catch (Exception e) {
+            throw new BusinessException(StatusConstant.DISABLE, e.getMessage());
+        }
+    }
+
+    @Override
+    public CommonVo delGood(Integer goodId) {
+        try {
+            goodsMapper.deleteByGoodId(goodId);
+            return CommonVo.builder()
+                    .fieldCount(0)
+                    .affectedRows(1)
+                    .insertId(0)
+                    .serverStatus(34)
                     .warningCount(0)
                     .message("")
                     .protocol41(true)

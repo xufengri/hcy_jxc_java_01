@@ -1,5 +1,6 @@
 package org.example.result;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Result<T> implements Serializable {
 
+    @ApiModelProperty("编码：1成功，0和其它数字为失败")
     private Integer code; //编码：1成功，0和其它数字为失败
+
+    @ApiModelProperty("错误信息")
     private String msg; //错误信息
+
+    @ApiModelProperty("数据")
     private T data; //数据
 
     public static <T> Result<T> success() {

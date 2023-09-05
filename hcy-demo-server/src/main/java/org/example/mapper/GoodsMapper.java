@@ -1,8 +1,11 @@
 package org.example.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.example.dto.AddGoodDto;
+import org.example.dto.UpdateGoodDto;
 import org.example.entity.Goods;
 
 import java.util.List;
@@ -23,4 +26,16 @@ public interface GoodsMapper {
 
 
     void insert(AddGoodDto addGoodDto);
+
+    @Update("update goods set good_status = 0 where good_id =#{goodId}")
+    void upStatus(Integer goodId);
+
+    @Update("update goods set good_status = 1 where good_id =#{goodId}")
+    void downStatus(Integer goodId);
+
+
+    void updateGood(UpdateGoodDto updateGoodDto);
+
+    @Delete("delete from goods where good_id =#{goodId}")
+    void deleteByGoodId(Integer goodId);
 }

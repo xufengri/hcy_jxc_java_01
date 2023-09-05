@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.example.constant.MessageConstant;
 import org.example.constant.StatusConstant;
 import org.example.dto.OrderPageDto;
@@ -24,6 +26,7 @@ import javax.validation.constraints.NotNull;
  **/
 @RestController
 @RequestMapping("/order")
+@Api(tags = "订单相关接口")
 public class OrderController {
 
     @Autowired
@@ -36,6 +39,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("/getOrders")
+    @ApiOperation("订单分页查询")
     public Result getOrdersPage(OrderPageDto orderPageDto) {
         PageResult<Order> pageResult = orderService.getOrdersPage(orderPageDto);
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, pageResult);
@@ -48,6 +52,7 @@ public class OrderController {
      * @return
      */
     @PutMapping("/orderOk/{orderId}")
+    @ApiOperation("订单确认收款")
     public Result orderOk(@NotNull  @PathVariable("orderId") Integer orderId) {
         CommonVo commonVo = orderService.orderOk(orderId);
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, commonVo);
@@ -59,6 +64,7 @@ public class OrderController {
      * @return
      */
     @PutMapping("/deliveryOrder")
+    @ApiOperation("订单发货")
     public Result deliveryOrder(@Validated  @RequestBody DeliveryOrderDto deliveryOrderDto) {
         CommonVo commonVo = orderService.deliveryOrder(deliveryOrderDto);
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, commonVo);
@@ -70,9 +76,11 @@ public class OrderController {
      * @return
      */
     @DeleteMapping("/delOrder/{orderId}")
+    @ApiOperation("取消订单")
     public Result delOrder(@NotNull @PathVariable("orderId") Integer orderId) {
         CommonVo commonVo = orderService.delOrder(orderId);
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, commonVo);
     }
+
 
 }

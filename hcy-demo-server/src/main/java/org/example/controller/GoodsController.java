@@ -1,9 +1,13 @@
 package org.example.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.example.constant.MessageConstant;
 import org.example.constant.StatusConstant;
 import org.example.dto.AddGoodDto;
 import org.example.dto.GoodsPageDto;
+import org.example.dto.UpStatusDto;
+import org.example.dto.UpdateGoodDto;
 import org.example.result.PageResult;
 import org.example.result.Result;
 import org.example.service.GoodsService;
@@ -12,6 +16,8 @@ import org.example.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @ClassName GoodsServiceController
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
  **/
 @RestController
 @RequestMapping("/goods")
+@Api(tags = "货物相关接口")
 public class GoodsController {
 
     @Autowired
@@ -34,6 +41,7 @@ public class GoodsController {
      * @return
      */
     @GetMapping("/getGoods")
+    @ApiOperation("货物分页查询")
     public Result getGoods(GoodsPageDto goodsPageDto) {
         PageResult<GoodsVo> pageResult = goodsService.getGoods(goodsPageDto);
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, pageResult);
@@ -46,9 +54,47 @@ public class GoodsController {
      * @return
      */
     @PostMapping("/addGood")
-    public Result addGood(@Validated  @RequestBody AddGoodDto addGoodDto) {
+    @ApiOperation("添加货物")
+    public Result addGood(@Validated @RequestBody AddGoodDto addGoodDto) {
         CommonVo commonVo = goodsService.addGood(addGoodDto);
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, commonVo);
     }
 
+    /**
+     * 货物上下架
+     *
+     * @param upStatusDto
+     * @return
+     */
+    @PutMapping("/upStatus")
+    @ApiOperation("货物上下架")
+    public Result upStatus(@Validated @RequestBody UpStatusDto upStatusDto) {
+        CommonVo commonVo = goodsService.upStatus(upStatusDto);
+        return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, commonVo);
+    }
+
+    /**
+     * 编辑
+     *
+     * @param updateGoodDto
+     * @return
+     */
+    @PutMapping("/updateGood")
+    @ApiOperation("编辑")
+    public Result updateGood(@Validated @RequestBody UpdateGoodDto updateGoodDto) {
+        CommonVo commonVo = goodsService.updateGood(updateGoodDto);
+        return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, commonVo);
+    }
+
+    /**
+     * 删除货物
+     * @param goodId
+     * @return
+     */
+    @DeleteMapping("/delGood/{goodId}")
+    @ApiOperation("删除货物")
+    public Result delGood(@NotNull @PathVariable("goodId") Integer goodId) {
+        CommonVo commonVo = goodsService.delGood(goodId);
+        return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, commonVo);
+    }
 }

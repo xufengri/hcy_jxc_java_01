@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.example.constant.MessageConstant;
 import org.example.constant.StatusConstant;
 import org.example.entity.Order;
@@ -24,6 +26,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/order")
+@Api(tags = "查询订单详情接口")
 public class OrderDetailController {
 
     @Autowired
@@ -35,6 +38,7 @@ public class OrderDetailController {
      * @return
      */
     @GetMapping("/getgetOrderDetail/{orderId}")
+    @ApiOperation("查看订单详情")
     public Result getgetOrderDetail(@NotNull @PathVariable("orderId") Integer orderId) {
         List<OrderDetailVo> list = orderDetailService.getgetOrderDetail(orderId);
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS,list);

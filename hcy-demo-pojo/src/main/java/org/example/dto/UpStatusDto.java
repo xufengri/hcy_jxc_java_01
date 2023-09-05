@@ -10,22 +10,23 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * @ClassName deliveryOrderDto
+ * @ClassName UpStatusDto
  * @Description TODO
  * @Author Lenovo
- * @Date 2023/9/5 14:26
+ * @Date 2023/9/5 16:29
  * @Version 1.0
  **/
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeliveryOrderDto implements Serializable {
-    @NotNull
-    @ApiModelProperty(value = "订单号",required = true)
-    private Integer orderId;
+public class UpStatusDto implements Serializable {
 
-    @ApiModelProperty(value = "发货时间",required = true)
     @NotNull
-    private String deliveryTime;
+    @ApiModelProperty(value = "货物Id",required = true)
+    private Integer goodId;
+
+    @NotNull
+    @ApiModelProperty(value = "货物状态",required = true)
+    private Integer goodStatus;
 }

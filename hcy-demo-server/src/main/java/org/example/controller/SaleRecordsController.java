@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.example.constant.MessageConstant;
 import org.example.constant.StatusConstant;
 import org.example.dto.SaleRecordsPageDto;
@@ -25,6 +27,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/order/getSaleRecords")
+@Api(tags = "零售记录接口")
 public class SaleRecordsController {
 
     @Autowired
@@ -34,6 +37,7 @@ public class SaleRecordsController {
      * 查询实体店销售记录列表
      */
     @GetMapping("/list")
+    @ApiOperation("查询实体店销售记录列表")
     public Result getSaleRecordsList() {
         List list = saleRecordsService.getSaleRecordsList();
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS,list);
@@ -44,6 +48,7 @@ public class SaleRecordsController {
      * @return
      */
     @GetMapping
+    @ApiOperation("分页条件查询")
     public Result getSaleRecordsPage(@Validated  SaleRecordsPageDto saleRecordsPageDto){
         PageResult<SaleRecordsVo> pageResult = saleRecordsService.getSaleRecordsPage(saleRecordsPageDto);
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS,pageResult);

@@ -17,6 +17,24 @@
                 #{goodCode},
                 0)
     </insert>
+    <update id="updateGood">
+        update goods
+        <set>
+            <if test="goodCode != null and goodCode != ''">
+                good_code =#{goodCode},
+            </if>
+            <if test="goodName != null and goodName != ''">
+                good_name =#{goodName},
+            </if>
+            <if test="total != null">
+                total =#{total},
+            </if>
+            <if test="goodDesc != null and goodDesc != ''">
+                good_desc =#{goodDesc},
+            </if>
+        </set>
+        where good_id =#{goodId}
+    </update>
     <select id="selectList" resultType="org.example.entity.Goods">
         select good_id,good_name,price,total,good_status,good_desc,good_code from goods
         <where>
