@@ -22,10 +22,10 @@ import org.example.vo.PriceList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName GoodsServiceImpl
@@ -59,13 +59,31 @@ public class GoodsServiceImpl implements GoodsService {
         PageHelper.startPage(goodsPageDto.getPage(), goodsPageDto.getPageSize());
         List<Goods> goodsList = goodsMapper.selectList(goodsPageDto.getGoodName());
         Page<Goods> page = (Page<Goods>) goodsList;
+        List<Goods> result = page.getResult();
+        Map<Integer, List<PriceList>> map = getIntegerListMap(result);
         for (Goods goods : page.getResult()) {
-            List<PriceList> priceLists = rolesMapper.selectByGoodId(goods.getGoodId());
+            Integer goodId = goods.getGoodId();
             GoodsVo goodsVo = BeanUtil.copyProperties(goods, GoodsVo.class);
-            goodsVo.setPriceList(priceLists);
+            List<PriceList> priceList = map.get(goodId);
+            goodsVo.setPriceList(priceList);
             goodsVoList.add(goodsVo);
         }
         return new PageResult<>(page.getTotal(), goodsVoList);
+    }
+
+    private Map<Integer, List<PriceList>> getIntegerListMap(List<Goods> result) {
+        if (CollectionUtils.isEmpty(result)) {
+            return Collections.emptyMap();
+        }
+        List<Integer> goodIds = result.stream().filter(x -> Objects.nonNull(x.getGoodId())).map(x -> x.getGoodId())
+                .collect(Collectors.toList());
+        List<PriceList> priceLists = rolesMapper.selectByGoodIds(goodIds);
+        if (CollectionUtils.isEmpty(priceLists)) {
+            return Collections.emptyMap();
+        }
+        return priceLists.stream().collect(Collectors.groupingBy(PriceList::getGoodId));
+
+
     }
 
     @Override
@@ -104,8 +122,9 @@ public class GoodsServiceImpl implements GoodsService {
         try {
             if (upStatusDto.getGoodStatus().equals(0)) {
                 goodsMapper.upStatus(upStatusDto.getGoodId());
+            } else {
+                goodsMapper.downStatus(upStatusDto.getGoodId());
             }
-            goodsMapper.downStatus(upStatusDto.getGoodId());
             return CommonVo.builder()
                     .fieldCount(0)
                     .affectedRows(1)

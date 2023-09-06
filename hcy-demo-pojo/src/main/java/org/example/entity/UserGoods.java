@@ -1,4 +1,4 @@
-package org.example.vo;
+package org.example.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,22 +9,27 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * @ClassName PriceList
+ * @ClassName UserGoods
  * @Description TODO
  * @Author Lenovo
- * @Date 2023/9/5 13:15
+ * @Date 2023/9/6 11:31
  * @Version 1.0
  **/
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PriceList implements Serializable {
+public class UserGoods implements Serializable {
 
-    private String name;
+    private Integer goodId;
+
+    private String goodName;
+
+    private Integer userId;
 
     private BigDecimal price;
 
-    private Integer roleId;
-    private Integer goodId;
+    private Integer total;
+
+
 }

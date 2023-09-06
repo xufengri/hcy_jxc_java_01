@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -23,7 +21,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GoodsPageDto implements Serializable {
+public class UserPageDto implements Serializable {
     //页码
     // @NotEmpty(message = "页码不能为空！")
     @Valid
@@ -36,10 +34,10 @@ public class GoodsPageDto implements Serializable {
     @Valid
     @Size(max = 500, min = 5,message = "每页记录数不能为空")
     @ApiModelProperty(value = "每页记录数",required = true)
-    private Integer pageSize;
+    private Integer size;
 
-    @ApiModelProperty(value = "货物名称",required = false)
-    private String goodName;
+    @ApiModelProperty(value = "商店名称",required = false)
+    private String name;
 
 
 

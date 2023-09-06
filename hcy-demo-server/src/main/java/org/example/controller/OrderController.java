@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -82,5 +83,10 @@ public class OrderController {
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, commonVo);
     }
 
+    // @PostMapping("/exportMupOrderData")
+    // @ApiOperation("订单导出表格")
+    // public void exportMupOrderData(HttpServletResponse response){
+    //     orderService.exportMupOrderData();
+    // }
 
 }

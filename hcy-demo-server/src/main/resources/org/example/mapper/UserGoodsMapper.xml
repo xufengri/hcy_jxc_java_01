@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.mapper.UserGoodsMapper">
+    <select id="selectByUserId" resultType="org.example.vo.GetInventoryVo">
+        select ug.good_id,
+               ug.good_name,
+               ug.price,
+               ug.total,
+               g.good_code
+        from user_goods ug
+                 join goods g on ug.good_id = g.good_id
+        where ug.user_id = #{id}
+    </select>
+</mapper>

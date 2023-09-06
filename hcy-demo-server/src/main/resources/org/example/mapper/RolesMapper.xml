@@ -10,4 +10,14 @@
                       on r.id = gp.role_id
         where gp.good_id = #{goodId}
     </select>
+    <select id="selectByGoodIds" resultType="org.example.vo.PriceList">
+        select t1.role_id roleId,t1.price ,t2.name,t1.good_id goodId
+        from good_price t1
+        left join roles t2 on t1.role_id =t2.id
+        where t1.good_id in
+        <foreach collection="goodIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+
+    </select>
 </mapper>

@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.vo.PriceList;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
@@ -23,12 +25,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddGoodDto implements Serializable {
-    @NotNull
+    @NotBlank(message = "商品编码不能为空")
     @ApiModelProperty(value = "商品编码",required = true)
     private String goodCode;
 
     @ApiModelProperty(value = "货物名称",required = true)
-    @NotNull
     private String goodName;
 
     @ApiModelProperty(value = "价格集合",required = true)

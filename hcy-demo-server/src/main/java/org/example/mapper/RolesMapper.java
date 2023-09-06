@@ -9,4 +9,6 @@ import java.util.List;
 public interface RolesMapper {
 
     List<PriceList> selectByGoodId(Integer goodId);
+
+    List<PriceList> selectByGoodIds(List<Integer> goodIds);
 }

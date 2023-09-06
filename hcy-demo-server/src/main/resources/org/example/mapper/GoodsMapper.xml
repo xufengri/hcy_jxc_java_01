@@ -27,10 +27,22 @@
                 good_name =#{goodName},
             </if>
             <if test="total != null">
-                total =#{total},
+                total = total + #{total},
             </if>
             <if test="goodDesc != null and goodDesc != ''">
                 good_desc =#{goodDesc},
+            </if>
+        </set>
+        where good_id =#{goodId}
+    </update>
+    <update id="updateoutGoodsGood">
+        update goods
+        <set>
+            <if test="reason != null and reason != ''">
+                good_desc =#{reason},
+            </if>
+            <if test="count != null">
+                total = total - #{count}
             </if>
         </set>
         where good_id =#{goodId}

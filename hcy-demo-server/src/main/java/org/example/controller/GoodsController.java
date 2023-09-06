@@ -42,7 +42,7 @@ public class GoodsController {
      */
     @GetMapping("/getGoods")
     @ApiOperation("货物分页查询")
-    public Result getGoods(GoodsPageDto goodsPageDto) {
+    public Result getGoods(@Validated GoodsPageDto goodsPageDto) {
         PageResult<GoodsVo> pageResult = goodsService.getGoods(goodsPageDto);
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, pageResult);
     }
@@ -55,7 +55,7 @@ public class GoodsController {
      */
     @PostMapping("/addGood")
     @ApiOperation("添加货物")
-    public Result addGood(@Validated @RequestBody AddGoodDto addGoodDto) {
+    public Result addGood(@RequestBody  @Validated AddGoodDto addGoodDto) {
         CommonVo commonVo = goodsService.addGood(addGoodDto);
         return new Result(StatusConstant.ENABLE, MessageConstant.SUCCESS, commonVo);
     }

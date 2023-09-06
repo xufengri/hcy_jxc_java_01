@@ -13,34 +13,30 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
- * @ClassName SaleRecordsPageDto
+ * @ClassName GetInventoryDto
  * @Description TODO
  * @Author Lenovo
- * @Date 2023/9/4 12:51
+ * @Date 2023/9/6 11:29
  * @Version 1.0
  **/
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GoodsPageDto implements Serializable {
+public class GetInventoryDto implements Serializable {
     //页码
-    // @NotEmpty(message = "页码不能为空！")
     @Valid
     @Size(max = 1000, min = 1,message = "页码不能为空")
     @ApiModelProperty(value = "页码",required = true)
     private Integer page;
 
     //每页记录数
-    // @NotNull(message = "每页记录数不能为空")
     @Valid
     @Size(max = 500, min = 5,message = "每页记录数不能为空")
     @ApiModelProperty(value = "每页记录数",required = true)
-    private Integer pageSize;
+    private Integer size;
 
-    @ApiModelProperty(value = "货物名称",required = false)
-    private String goodName;
-
-
-
+    @NotEmpty(message = "店铺编号不能为空")
+    @ApiModelProperty(value = "店铺编号",required = true)
+    private Integer id;
 }
